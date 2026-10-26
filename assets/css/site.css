@@ -1,6 +1,6 @@
 /* Кухня в цифрах — ledger aesthetic.
    Layout: a dark static hero with the product preview, then a steps block opens the page,
-   then a light «paper» price list, how-it-works, order form and FAQ. */
+   then a light «paper» product list with one price, how-it-works, order form and FAQ. */
 @font-face { font-family: 'Unbounded'; font-weight: 700; font-display: swap; src: url('../../fonts/unbounded-cyrillic-700-normal.woff2') format('woff2'); unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
 @font-face { font-family: 'Unbounded'; font-weight: 700; font-display: swap; src: url('../../fonts/unbounded-latin-700-normal.woff2') format('woff2'); unicode-range: U+0000-00FF, U+2000-206F, U+20AC, U+2212; }
 @font-face { font-family: 'Unbounded'; font-weight: 800; font-display: swap; src: url('../../fonts/unbounded-cyrillic-800-normal.woff2') format('woff2'); unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
@@ -95,7 +95,6 @@ h2.title { font-family: var(--display); font-weight: 800; font-size: clamp(28px,
 .product h3 { font-family: var(--display); font-weight: 700; font-size: 21px; line-height: 1.2; margin: 0; }
 .product p { margin: 0; color: var(--muted); }
 .product ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 15.5px; display: grid; gap: 4px; }
-.product .price { margin-top: auto; padding-top: 14px; border-top: 1px dashed var(--line); font-family: var(--display); font-weight: 800; font-size: 28px; font-variant-numeric: tabular-nums; }
 .bundle { margin-top: 18px; background: var(--ink); color: var(--paper); border-radius: 22px; padding: 32px; display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: center; }
 .bundle h3 { font-family: var(--display); font-weight: 800; font-size: clamp(22px, 2.6vw, 30px); margin: 6px 0 8px; }
 .bundle p { margin: 0; opacity: .75; }
@@ -162,3 +161,5 @@ footer a { text-decoration: none; } footer a:hover { text-decoration: underline;
   .hero .ledger, .hero .weeks-ui { justify-self: stretch; max-width: none; }
   .hero .cap { bottom: auto; }
 }
+.order-line { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; padding-bottom: 14px; border-bottom: 1px solid var(--line); font-size: 15.5px; }
+.order-line b { font-family: var(--display); font-size: 22px; white-space: nowrap; font-variant-numeric: tabular-nums; }

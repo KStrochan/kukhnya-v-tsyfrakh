@@ -2,7 +2,7 @@
 
 Лендинг готових Google-таблиць для кафе і піцерій: техкарти й собівартість, закупівлі та інвентаризація, санітарні журнали.
 
-Статичний сайт без збірки: HTML + CSS + JS-модулі, Three.js лежить локально у `vendor/`, шрифти — у `fonts/`. Заявки з форми йдуть у Telegram через серверну функцію Vercel `api/order.js`.
+Статичний сайт без збірки: HTML + CSS + JS-модулі, шрифти — у `fonts/`. Заявки з форми йдуть у Telegram через серверну функцію Vercel `api/order.js`.
 
 **Перший екран.** Статичний: заголовок і готова техкарта піци з собівартістю 95,35 грн і фуд-костом. Під ним — п'ять кроків, як таблиця рахує цю піцу. Без відео й анімацій, тож сторінка легка і швидко відкривається на телефоні.
 
@@ -19,7 +19,7 @@
 - `title`, `description`, canonical, Open Graph і Twitter-картка (`img/og.png`, 1200×630).
 - JSON-LD: Organization, WebSite, Product з Offer (`PreOrder`), FAQPage.
 - `robots.txt`, `sitemap.xml`, `site.webmanifest`, favicon SVG.
-- Шрифти й Three.js віддаються з власного домену з довгим кешем (`vercel.json`).
+- Шрифти віддаються з власного домену з довгим кешем (`vercel.json`).
 
 **Якщо підключаєте свій домен** — замініть `https://kukhnya-v-tsyfrakh.vercel.app` на нього в `index.html`, `privacy.html`, `robots.txt` і `sitemap.xml`.
 
