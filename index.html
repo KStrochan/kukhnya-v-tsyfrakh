@@ -29,7 +29,7 @@
     { "@type": "Organization", "@id": "https://kukhnya-v-tsyfrakh.vercel.app/#org", "name": "Кухня в цифрах", "url": "https://kukhnya-v-tsyfrakh.vercel.app/", "logo": "https://kukhnya-v-tsyfrakh.vercel.app/img/favicon.svg" },
     { "@type": "WebSite", "name": "Кухня в цифрах", "url": "https://kukhnya-v-tsyfrakh.vercel.app/", "inLanguage": "uk" },
     { "@type": "Product", "name": "Набір «Кухня під контролем»", "description": "Три Google-таблиці для кафе і піцерій: техкарти і собівартість, закупівлі та інвентаризація, санітарні журнали.", "brand": { "@id": "https://kukhnya-v-tsyfrakh.vercel.app/#org" }, "image": "https://kukhnya-v-tsyfrakh.vercel.app/img/og.png",
-      "offers": { "@type": "Offer", "price": "599", "priceCurrency": "UAH", "availability": "https://schema.org/InStock", "url": "https://kukhnya-v-tsyfrakh.vercel.app/#order" } },
+      "offers": { "@type": "Offer", "price": "599", "priceCurrency": "UAH", "priceValidUntil": "2026-11-02", "availability": "https://schema.org/InStock", "url": "https://kukhnya-v-tsyfrakh.vercel.app/#order" } },
     { "@type": "FAQPage", "mainEntity": [
       { "@type": "Question", "name": "У мене Excel, а не Google Таблиці", "acceptedAnswer": { "@type": "Answer", "text": "Файли працюють і в Excel, і в Google Таблицях. Формули ті самі." } },
       { "@type": "Question", "name": "Підійде для кав'ярні чи бургерної?", "acceptedAnswer": { "@type": "Answer", "text": "Так. Приклади зроблені для піцерії, але продукти і страви ви вписуєте свої, тож формат закладу не важливий." } },
@@ -41,10 +41,11 @@
 </script>
 <!-- Meta Pixel: встав сюди код пікселя з Events Manager, коли створиш рекламний кабінет -->
 </head>
-<body>
+<body data-promo-until="2026-11-02T23:59:59+02:00" data-price-now="599" data-price-after="699">
 <a class="skip" href="#main">До змісту</a>
 
 <header class="site-header" id="top">
+  <div class="promo-bar" data-promo hidden><span>🔥 Ціна запуску 599 грн — до неділі, 2 листопада</span> <b data-countdown></b></div>
   <div class="wrap">
     <a class="logo" href="#top" aria-label="Кухня в цифрах — на початок">Кухня <span>в цифрах</span></a>
     <nav aria-label="Розділи"><a href="#products">Таблиці</a><a href="#how">Як це працює</a><a href="#faq">Питання</a></nav>
@@ -59,7 +60,9 @@
         <div class="eyebrow">Google-таблиці для кафе і піцерій</div>
         <h1>Знайте собівартість кожної страви <em>до копійки</em></h1>
         <p>Техкарти, фуд-кост і ціна в меню рахуються самі. Нижче — як таблиця рахує одну піцу.</p>
-        <div class="row"><a class="btn" href="#order">Усі три таблиці — 599 грн</a><a class="btn ghost" href="#products">Що всередині</a></div>
+        <div class="row"><a class="btn" href="#order" data-p>Усі три таблиці — 599 грн</a><a class="btn ghost" href="#products">Що всередині</a></div>
+        <ul class="chips"><li>Таблиці на пошту одразу після оплати</li><li>Excel і Google Таблиці</li><li>Один платіж, без підписки</li></ul>
+        <p class="promo-line" data-promo hidden>Ціна запуску 599 грн діє ще <b data-countdown></b>. З 3 листопада — 699 грн.</p>
       </div>
       <aside class="ledger" aria-label="Техкарта піци">
         <div class="ledger-head"><span>Техкарта · Пепероні 30 см</span><span>грн</span></div>
@@ -110,6 +113,17 @@
     </div>
   </section>
 
+  <section class="block" id="fit">
+    <div class="wrap">
+      <div class="kicker">Кому підходить</div>
+      <h2 class="title">Таблиці саме для вас, якщо ви…</h2>
+      <div class="fit">
+        <div class="fit-col yes"><h3>Так, вам підходить</h3><ul><li>Тримаєте кафе, піцерію, кав'ярню чи доставку</li><li>Ставили ціни «на око» і не знаєте точний фуд-кост</li><li>Постачальники піднімають ціни, а меню не перераховане</li><li>На інвентаризації «десь щось зникає»</li><li>Заповнюєте журнали в зошиті заднім числом</li><li>Хочете бачити гроші в цифрах, а не у відчуттях</li></ul></div>
+        <div class="fit-col no"><h3>Мабуть, не підійде, якщо ви</h3><ul><li>Вже ведете техкарти в iiko чи Poster і вам цього вистачає</li><li>Шукаєте програму, яка все зробить без вашої участі</li></ul></div>
+      </div>
+    </div>
+  </section>
+
   <section class="block">
     <div class="wrap">
       <div class="kicker">Знайомо?</div>
@@ -145,7 +159,7 @@
       </div>
       <div class="bundle">
         <div><div class="kicker">Ціна</div><h3>«Кухня під контролем» — усі три таблиці</h3><p>Один платіж, без підписки. Для порівняння: піца за 249 грн з фуд-костом 38% замість 30% недоотримує близько 20 грн. При 30 піцах на день це майже 18 000 грн на місяць.</p></div>
-        <div class="price-big">599 грн<small>один раз, без підписки</small></div>
+        <div class="price-big"><span data-p>599 грн</span><small>один раз, без підписки</small></div>
       </div>
     </div>
   </section>
@@ -162,6 +176,21 @@
     </div>
   </section>
 
+  <section class="block block-alt" id="recap">
+    <div class="wrap">
+      <div class="kicker">Порахуємо разом</div>
+      <h2 class="title">Усе, що ви отримуєте за один платіж</h2>
+      <div class="recap">
+        <ul class="recap-list"><li><span class="ok" aria-hidden="true">✓</span><div><b>Техкарти і собівартість</b><span>до 60 продуктів і 100 страв, фуд-кост і рекомендована ціна</span></div></li><li><span class="ok" aria-hidden="true">✓</span><div><b>Закупівлі та інвентаризація</b><span>мінімальні залишки, нестача в гривнях</span></div></li><li><span class="ok" aria-hidden="true">✓</span><div><b>Санітарні журнали</b><span>6 журналів для друку на A4</span></div></li><li><span class="ok" aria-hidden="true">✓</span><div><b>Готовий приклад</b><span>2 піци і салат уже заповнені</span></div></li><li><span class="ok" aria-hidden="true">✓</span><div><b>Інструкція</b><span>на першому аркуші кожної таблиці</span></div></li></ul>
+        <div class="recap-buy">
+          <div class="recap-total"><span>Разом</span><b data-p>599 грн</b></div>
+          <p class="promo-line" data-promo hidden>Ціна запуску діє ще <b data-countdown></b>. З 3 листопада — 699 грн.</p>
+          <a class="btn" href="#order">Отримати зараз</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="block block-alt" id="order">
     <div class="wrap order">
       <div>
@@ -170,9 +199,8 @@
         <p class="lead">Залиште email, і на наступному кроці покажемо, як оплатити через EasyPay. Таблиці прийдуть листом одразу після оплати.</p>
       </div>
       <form id="orderForm" novalidate>
-        <input type="hidden" name="product" value="Набір «Кухня під контролем» — 599 грн">
-        <div class="order-line"><span>«Кухня під контролем»: техкарти, закупівлі, санжурнали</span><b>599 грн</b></div>
-        <label for="name">Ім'я<input id="name" name="name" autocomplete="name" required></label>
+        <input type="hidden" name="product" value="Набір «Кухня під контролем» — 599 грн" data-p>
+        <div class="order-line"><span>«Кухня під контролем»: техкарти, закупівлі, санжурнали</span><b data-p>599 грн</b></div>
         <label for="contact">Email<input id="contact" name="contact" type="email" inputmode="email" required placeholder="you@gmail.com" autocomplete="email"></label>
         <label for="venue">Заклад (необов'язково)<input id="venue" name="comment" placeholder="Піцерія, кав'ярня, місто"></label>
         <button class="btn" type="submit">Перейти до оплати</button>
@@ -190,6 +218,14 @@
       <details><summary>Підійде для кав'ярні чи бургерної?</summary><p>Так. Приклади зроблені для піцерії, але продукти і страви ви вписуєте свої, тож формат закладу не важливий.</p></details>
       <details><summary>Санжурнали замінюють систему НАССР?</summary><p>Ні. Це робочі шаблони журналів. Які журнали обов'язкові саме для вас, визначає ваша система НАССР — звірте шаблони з нею.</p></details>
       <details><summary>Скільки людей можуть працювати з таблицею?</summary><p>Скільки завгодно. Google Таблицю можна відкрити для всієї команди: кухаря, адміністратора, бухгалтера.</p></details>
+    </div>
+  </section>
+  <section class="final" id="final">
+    <div class="wrap">
+      <h2>Поки ціни в меню «на око», маржа тане щодня</h2>
+      <p>Одна таблиця покаже, які страви продаються в мінус, уже сьогодні ввечері.</p>
+      <a class="btn" href="#order" data-p>Забрати таблиці за 599 грн</a>
+      <p class="promo-line" data-promo hidden>Ціна запуску ще <b data-countdown></b> · потім 699 грн</p>
     </div>
   </section>
 </main>
