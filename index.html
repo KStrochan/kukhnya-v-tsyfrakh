@@ -155,8 +155,8 @@
       <div class="kicker">Як це працює</div>
       <h2 class="title">Від заявки до першої техкарти — один вечір</h2>
       <ol class="steps">
-        <li><h3>Оплачуєте замовлення</h3><p>Залишаєте контакт і оплачуєте переказом на картку через EasyPay. Ми пишемо вам у Telegram або телефоном.</p></li>
-        <li><h3>Отримуєте посилання</h3><p>Посилання «Створити копію» відкриває таблицю у вашому Google-акаунті. Підходить і для Excel.</p></li>
+        <li><h3>Оплачуєте замовлення</h3><p>Залишаєте email і оплачуєте переказом на картку через EasyPay.</p></li>
+        <li><h3>Отримуєте файли на пошту</h3><p>Лист із трьома таблицями приходить одразу після оплати. Вони відкриваються в Excel і Google Таблицях.</p></li>
         <li><h3>Вписуєте свої продукти</h3><p>Жовті клітинки заповнюєте ви, решта рахується сама. Інструкція — на першому аркуші.</p></li>
       </ol>
     </div>
@@ -167,13 +167,13 @@
       <div>
         <div class="kicker">Замовлення</div>
         <h2 class="title">Оформити замовлення</h2>
-        <p class="lead">Залиште контакт, і на наступному кроці покажемо, як оплатити через EasyPay. Після оплати надішлемо таблиці в Telegram або на телефон.</p>
+        <p class="lead">Залиште email, і на наступному кроці покажемо, як оплатити через EasyPay. Таблиці прийдуть листом одразу після оплати.</p>
       </div>
       <form id="orderForm" novalidate>
         <input type="hidden" name="product" value="Набір «Кухня під контролем» — 599 грн">
         <div class="order-line"><span>«Кухня під контролем»: техкарти, закупівлі, санжурнали</span><b>599 грн</b></div>
         <label for="name">Ім'я<input id="name" name="name" autocomplete="name" required></label>
-        <label for="contact">Telegram або телефон<input id="contact" name="contact" required placeholder="@username або +380…" autocomplete="tel"></label>
+        <label for="contact">Email<input id="contact" name="contact" type="email" inputmode="email" required placeholder="you@gmail.com" autocomplete="email"></label>
         <label for="venue">Заклад (необов'язково)<input id="venue" name="comment" placeholder="Піцерія, кав'ярня, місто"></label>
         <button class="btn" type="submit">Перейти до оплати</button>
         <div class="status" id="status" role="status" aria-live="polite"></div>

@@ -1,0 +1,8 @@
+{
+  "name": "kukhnya-v-tsyfrakh",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "nodemailer": "^6.10.1"
+  }
+}
