@@ -5,7 +5,9 @@ const onScroll = () => header.classList.toggle('solid', hero.getBoundingClientRe
 addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
-// Pre-order form → /api/order (Vercel function → Telegram).
+
+// Order form → /api/order (Vercel function → Telegram), then the EasyPay payment step.
+import { checkout } from './pay.js';
 const form = document.getElementById('orderForm');
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -14,10 +16,8 @@ form.addEventListener('submit', async (e) => {
   if (!data.name.trim() || !data.contact.trim()) { st.className = 'status err'; st.textContent = "Вкажіть ім'я і Telegram або телефон."; return; }
   st.className = 'status'; st.textContent = 'Надсилаємо…';
   try {
-    const r = await fetch('/api/order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...data, site: 'Кухня в цифрах' }) });
-    if (!r.ok) throw new Error();
-    st.className = 'status ok'; st.textContent = 'Дякуємо! Ми напишемо вам найближчим часом.';
-    form.reset();
+    const mode = await checkout(form, { site: 'Кухня в цифрах', product: data.product, price: '599 грн', amount: 599, name: data.name.trim(), contact: data.contact.trim(), comment: data.comment });
+    if (mode === 'lead') { st.className = 'status ok'; st.textContent = 'Дякуємо! Ми напишемо вам найближчим часом.'; form.reset(); }
   } catch {
     st.className = 'status err'; st.textContent = 'Не вдалося надіслати заявку. Спробуйте ще раз за хвилину.';
   }

@@ -29,7 +29,7 @@
     { "@type": "Organization", "@id": "https://kukhnya-v-tsyfrakh.vercel.app/#org", "name": "Кухня в цифрах", "url": "https://kukhnya-v-tsyfrakh.vercel.app/", "logo": "https://kukhnya-v-tsyfrakh.vercel.app/img/favicon.svg" },
     { "@type": "WebSite", "name": "Кухня в цифрах", "url": "https://kukhnya-v-tsyfrakh.vercel.app/", "inLanguage": "uk" },
     { "@type": "Product", "name": "Набір «Кухня під контролем»", "description": "Три Google-таблиці для кафе і піцерій: техкарти і собівартість, закупівлі та інвентаризація, санітарні журнали.", "brand": { "@id": "https://kukhnya-v-tsyfrakh.vercel.app/#org" }, "image": "https://kukhnya-v-tsyfrakh.vercel.app/img/og.png",
-      "offers": { "@type": "Offer", "price": "599", "priceCurrency": "UAH", "availability": "https://schema.org/PreOrder", "url": "https://kukhnya-v-tsyfrakh.vercel.app/#order" } },
+      "offers": { "@type": "Offer", "price": "599", "priceCurrency": "UAH", "availability": "https://schema.org/InStock", "url": "https://kukhnya-v-tsyfrakh.vercel.app/#order" } },
     { "@type": "FAQPage", "mainEntity": [
       { "@type": "Question", "name": "У мене Excel, а не Google Таблиці", "acceptedAnswer": { "@type": "Answer", "text": "Файли працюють і в Excel, і в Google Таблицях. Формули ті самі." } },
       { "@type": "Question", "name": "Підійде для кав'ярні чи бургерної?", "acceptedAnswer": { "@type": "Answer", "text": "Так. Приклади зроблені для піцерії, але продукти і страви ви вписуєте свої, тож формат закладу не важливий." } },
@@ -155,7 +155,7 @@
       <div class="kicker">Як це працює</div>
       <h2 class="title">Від заявки до першої техкарти — один вечір</h2>
       <ol class="steps">
-        <li><h3>Залишаєте заявку</h3><p>Залишаєте контакт. Ми пишемо вам у Telegram або телефоном.</p></li>
+        <li><h3>Оплачуєте замовлення</h3><p>Залишаєте контакт і оплачуєте переказом на картку через EasyPay. Ми пишемо вам у Telegram або телефоном.</p></li>
         <li><h3>Отримуєте посилання</h3><p>Посилання «Створити копію» відкриває таблицю у вашому Google-акаунті. Підходить і для Excel.</p></li>
         <li><h3>Вписуєте свої продукти</h3><p>Жовті клітинки заповнюєте ви, решта рахується сама. Інструкція — на першому аркуші.</p></li>
       </ol>
@@ -166,8 +166,8 @@
     <div class="wrap order">
       <div>
         <div class="kicker">Замовлення</div>
-        <h2 class="title">Оформити передзамовлення</h2>
-        <p class="lead">Ми запускаємо оплату на сайті. Залиште контакт — надішлемо реквізити і таблиці, щойно все запрацює. Ціна на сторінці остаточна.</p>
+        <h2 class="title">Оформити замовлення</h2>
+        <p class="lead">Залиште контакт, і на наступному кроці покажемо, як оплатити через EasyPay. Після оплати надішлемо таблиці в Telegram або на телефон.</p>
       </div>
       <form id="orderForm" novalidate>
         <input type="hidden" name="product" value="Набір «Кухня під контролем» — 599 грн">
@@ -175,7 +175,7 @@
         <label for="name">Ім'я<input id="name" name="name" autocomplete="name" required></label>
         <label for="contact">Telegram або телефон<input id="contact" name="contact" required placeholder="@username або +380…" autocomplete="tel"></label>
         <label for="venue">Заклад (необов'язково)<input id="venue" name="comment" placeholder="Піцерія, кав'ярня, місто"></label>
-        <button class="btn" type="submit">Залишити передзамовлення</button>
+        <button class="btn" type="submit">Перейти до оплати</button>
         <div class="status" id="status" role="status" aria-live="polite"></div>
         <p class="note">Натискаючи кнопку, ви погоджуєтесь з <a href="privacy.html">політикою конфіденційності</a>.</p>
       </form>
@@ -195,7 +195,7 @@
 </main>
 
 <footer>
-  <div class="wrap"><span>© 2026 Кухня в цифрах · шаблони для HoReCa</span><span><a href="privacy.html">Політика конфіденційності</a> · Передзамовлення, оплата після запуску</span></div>
+  <div class="wrap"><span>© 2026 Кухня в цифрах · шаблони для HoReCa</span><span><a href="privacy.html">Політика конфіденційності</a> · Оплата через EasyPay</span></div>
 </footer>
 
 <script type="module" src="assets/js/main.js"></script>
