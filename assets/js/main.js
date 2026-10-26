@@ -1,37 +1,7 @@
-import { createStory } from './story.js';
-import { buildPizza } from './pizza-scene.js';
-
-const story = document.getElementById('story');
-const rows = [...story.querySelectorAll('.ledger li')];
-const totalEl = document.getElementById('ledgerTotal');
-const fcEl = document.getElementById('ledgerFc');
-const fmt = (n) => n.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-let lastCount = -1;
-
-createStory({
-  section: story,
-  build: buildPizza,
-  onProgress(p) {
-    let sum = 0, count = 0;
-    rows.forEach((r) => {
-      const on = p >= +r.dataset.at;
-      if (on) { sum += +r.dataset.v; count++; }
-      r.classList.toggle('on', on);
-    });
-    if (count !== lastCount) {
-      const fresh = rows[count - 1];
-      if (fresh && lastCount !== -1 && count > lastCount) { fresh.classList.add('flash'); setTimeout(() => fresh.classList.remove('flash'), 700); }
-      lastCount = count;
-      totalEl.textContent = fmt(sum);
-    }
-    fcEl.classList.toggle('on', p >= 0.82);
-    story.classList.toggle('scrolled', p > 0.02);
-  },
-});
-
-// Header turns solid once the story is behind us.
+// Header turns solid once the dark hero is behind us.
+const hero = document.getElementById('hero');
 const header = document.querySelector('.site-header');
-const onScroll = () => header.classList.toggle('solid', story.getBoundingClientRect().bottom < 80);
+const onScroll = () => header.classList.toggle('solid', hero.getBoundingClientRect().bottom < 80);
 addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
