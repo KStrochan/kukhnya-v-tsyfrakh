@@ -47,3 +47,7 @@
 Праворуч на першому екрані грає коротке відео по колу без звуку.
 
 Файли — `assets/hero/`: `hero.mp4` (комп'ютер, 1280 px), `hero-m.mp4` (телефон, 720×1280), `poster.webp` і `poster-m.webp` (перший кадр; його видно до завантаження відео і тим, у кого ввімкнено «зменшити рух»). Відео — стоковий кліп Mixkit «Готова піца пепероні в коробці» (Mixkit Free License, комерційне використання дозволено), склеєний «вперед-назад», щоб коло йшло без ривка.
+
+## Фото і відео
+
+`assets/media/`: кліпи і кадри Mixkit під ліцензією Stock Video Free License (комерційне використання дозволено, авторство не обов'язкове): [тісто](https://mixkit.co/free-stock-video/chef-shaping-a-pizza-42469/), [соус](https://mixkit.co/free-stock-video/putting-sauce-on-pizza-dough-42473/), [сир](https://mixkit.co/free-stock-video/spreading-cheese-on-a-pizza-42475/), [піч](https://mixkit.co/free-stock-video/hot-oven-baking-pizzas-42481/), [кухар із тістом](https://mixkit.co/free-stock-video/chef-doing-acrobatics-with-the-dough-of-a-pizza-42472/), [нарізана піца](https://mixkit.co/free-stock-video/pizza-while-someone-takes-a-slice-42487/), [кухня](https://mixkit.co/free-stock-video/chef-working-in-a-large-kitchen-43048/), [калькулятор](https://mixkit.co/free-stock-video/woman-doing-accounts-on-a-calculator-4533/). У Mixkit є і кліпи «лише для особистого використання», тож перед заміною перевіряйте ліцензію на сторінці кліпу. Відео завантажуються тільки коли з'являються на екрані (`assets/js/live.js`).

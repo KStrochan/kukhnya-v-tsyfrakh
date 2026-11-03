@@ -2,7 +2,7 @@
 // word-by-word headings, stacked sheets and the phone buy bar.
 // Only opacity/transform are animated. Without this file, or with prefers-reduced-motion,
 // the page shows the finished pizza and every step as plain content.
-import { price } from './promo.js?v=20261103a';
+import { price } from './promo.js?v=20261103b';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const root = document.documentElement;
