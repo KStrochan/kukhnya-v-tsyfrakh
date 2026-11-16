@@ -34,12 +34,13 @@
 - `robots.txt`, `sitemap.xml`, `site.webmanifest`, favicon SVG.
 - Шрифти віддаються з власного домену з довгим кешем, а CSS і JS — з перевіркою свіжості при кожному заході (`vercel.json`), щоб після оновлення ніхто не отримав стару версію скриптів.
 
+**Пошта для звернень** — hello@kuhnyavcifrah.shop: скринька в Resend → Inboxes (MX `@` → receive-euw1.forge.rmta.net у GoDaddy).
+
 **Домен** — kuhnyavcifrah.shop (DNS у GoDaddy: A `@` → Vercel, CNAME `www` і `app` → Vercel). Адреса прописана в `index.html`, `privacy.html`, `oferta.html`, `robots.txt` і `sitemap.xml`.
 
 ## Що доробити перед запуском реклами
 
 - Вставити код Meta Pixel у `<head>` (місце позначене коментарем).
-- Дописати контакт для звернень у `privacy.html` і `oferta.html`.
 
 ## Відео на першому екрані
 
