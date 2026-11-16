@@ -1,22 +1,30 @@
 // Shared settings for paying with Creem (card, Apple Pay, Google Pay).
 //
 // Environment variables (Vercel → Project → Settings → Environment Variables):
-//   CREEM_API_KEY         — Creem → Developers → API key (Secret)
-//   CREEM_WEBHOOK_SECRET  — Creem → Developers → Webhooks → signing secret (Secret)
-//   CREEM_TEST            — "1" while testing: uses test-api.creem.io and the test products
-//   CREEM_PRODUCT_MONTH / CREEM_PRODUCT_YEAR — product ids (prod_…) of the two subscriptions
+//   CREEM_API_KEY         — Creem → Настройки → API ключи (Secret). A creem_test_… key switches
+//                           the whole flow to test mode (test-api.creem.io + test products).
+//   CREEM_WEBHOOK_SECRET  — Creem → Настройки → Вебхуки → signing secret of the same mode (Secret)
 //   SUPABASE_URL          — https://<project>.supabase.co of the app
 //   SUPABASE_SECRET_KEY   — Supabase → Project Settings → API keys → secret key (Secret)
 import crypto from 'node:crypto';
 
-export const creemBase = () => (process.env.CREEM_TEST === '1' ? 'https://test-api.creem.io/v1' : 'https://api.creem.io/v1');
+export const isTest = () => String(process.env.CREEM_API_KEY || '').startsWith('creem_test_');
 
-export const PLANS = {
-  month: { title: 'Доступ на місяць', days: 31, product: () => process.env.CREEM_PRODUCT_MONTH },
-  year: { title: 'Доступ на рік', days: 366, product: () => process.env.CREEM_PRODUCT_YEAR },
+export const creemBase = () => (isTest() ? 'https://test-api.creem.io/v1' : 'https://api.creem.io/v1');
+
+// Product ids are not secret; test and live mode have separate products in Creem.
+const PRODUCTS = {
+  live: { month: 'prod_56L4SkH58lmYl88O1XPUHZ', year: 'prod_L1z5Xg9LRpnD31UNTlMgc' },
+  test: { month: 'prod_6e1PZE8YJTSnqomirkcgQu', year: 'prod_4lXA6Z74fbkfy1S6jqn9pV' },
 };
 
-export const planByProduct = (id) => Object.entries(PLANS).find(([, p]) => id && p.product() === id)?.[0] || null;
+export const PLANS = {
+  month: { title: 'Доступ на місяць', days: 31, product: () => PRODUCTS[isTest() ? 'test' : 'live'].month },
+  year: { title: 'Доступ на рік', days: 366, product: () => PRODUCTS[isTest() ? 'test' : 'live'].year },
+};
+
+export const planByProduct = (id) =>
+  (id && Object.values(PRODUCTS).flatMap((m) => Object.entries(m)).find(([, pid]) => pid === id)?.[0]) || null;
 
 export const isEmail = (s) => /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(s);
 

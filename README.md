@@ -15,14 +15,14 @@
 3. Creem викликає `api/creem-webhook.js` (подія `checkout.completed`, далі щомісяця/щороку `subscription.paid`). Webhook перевіряє підпис і викликає в базі застосунку `grant_paid_access(email, до_дати)`: доступ подовжується до кінця оплаченого періоду + 1 день. Якщо покупець ще не входив, акаунт створюється, і він просто входить з цим email.
 4. Після першої оплати покупцю йде лист «Доступ активовано», власнику — «Нова підписка». Продовження проходять тихо.
 
-Тарифи (product id) — у змінних середовища, зі сторінки приходить тільки назва тарифу (`month` / `year`). Код — `assets/js/main.js`, `api/checkout.js`, `api/creem-webhook.js`, `api/_creem.js`, `api/_mail.js`.
+Тарифи (product id обох режимів) — у `api/_creem.js`, зі сторінки приходить тільки назва тарифу (`month` / `year`). Код — `assets/js/main.js`, `api/checkout.js`, `api/creem-webhook.js`, `api/_creem.js`, `api/_mail.js`.
 
 ## Деплой на Vercel
 
 1. New Project → імпортуйте цей репозиторій. Framework Preset: **Other**, Build Command порожній, Output Directory — корінь.
 2. Settings → Environment Variables:
    - пошта (Resend): `SMTP_HOST=smtp.resend.com`, `SMTP_PORT=465`, `SMTP_USER=resend`, `SMTP_PASS` — API-ключ Resend (Secret), `MAIL_FROM` — `Кухня в цифрах <hello@kuhnyavcifrah.shop>`, `OWNER_EMAIL` — куди сповіщення;
-   - Creem: `CREEM_API_KEY` і `CREEM_WEBHOOK_SECRET` (Secret), `CREEM_PRODUCT_MONTH`, `CREEM_PRODUCT_YEAR`, `CREEM_TEST=1` поки тестуєте (у бойовому режимі — видалити і вставити бойові ключі й product id);
+   - Creem: `CREEM_API_KEY` і `CREEM_WEBHOOK_SECRET` (Secret). Тестовий ключ (`creem_test_…`) сам вмикає тестовий режим і тестові товари; бойовий — бойові. Id товарів обох режимів — у `api/_creem.js`;
    - Supabase застосунку: `SUPABASE_URL`, `SUPABASE_SECRET_KEY` — секретний ключ (Secret);
 3. У Creem → Developers → Webhooks додати `https://kuhnyavcifrah.shop/api/creem-webhook`.
 4. Redeploy.

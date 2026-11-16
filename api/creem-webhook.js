@@ -1,7 +1,7 @@
 // Creem → this webhook after each subscription payment: extends app access for the buyer's email.
 // Register https://<site>/api/creem-webhook in Creem → Developers → Webhooks.
 import PRODUCT from './_product.js';
-import { PLANS, grantAccess, planByProduct, validSignature } from './_creem.js';
+import { PLANS, grantAccess, isTest, planByProduct, validSignature } from './_creem.js';
 import { esc, letter, mailer, sendToBuyer, sendToOwner } from './_mail.js';
 
 // One extra day so a renewal that is charged a few hours late doesn't lock the account.
@@ -62,7 +62,7 @@ export default async function handler(req, res) {
            <p style="margin:0 0 18px;font-size:15px;line-height:1.55">Увійдіть у застосунок з цим email (<b>${esc(email)}</b>) — код для входу прийде листом.</p>
            <p style="margin:0 0 18px"><a href="${PRODUCT.app}/login" style="display:inline-block;background:${PRODUCT.accent};color:#fff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700">Відкрити застосунок</a></p>
            <p style="margin:0;font-size:14px;color:#5c5c66">Керувати підпискою чи скасувати її можна за посиланням у листі від Creem про оплату. Питання — hello@kuhnyavcifrah.shop.</p>`));
-      await sendToOwner(t, `💳 Нова підписка — ${email}`, [`Тариф: ${PLANS[plan].title}`, `Email: ${email}`, `Доступ до: ${date}`, process.env.CREEM_TEST === '1' ? 'ТЕСТОВИЙ РЕЖИМ' : '']);
+      await sendToOwner(t, `💳 Нова підписка — ${email}`, [`Тариф: ${PLANS[plan].title}`, `Email: ${email}`, `Доступ до: ${date}`, isTest() ? 'ТЕСТОВИЙ РЕЖИМ' : '']);
     } catch (e) {
       console.error('creem webhook mail', e); // access is already granted; a lost letter must not trigger a retry
     }
