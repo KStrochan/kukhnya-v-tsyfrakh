@@ -2,7 +2,6 @@
 // word-by-word headings, stacked sheets and the phone buy bar.
 // Only opacity/transform are animated. Without this file, or with prefers-reduced-motion,
 // the page shows the finished pizza and every step as plain content.
-import { price } from './promo.js?v=20261103b';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const root = document.documentElement;
@@ -241,11 +240,11 @@ function reveals() {
 
 // ---------- sticky buy bar on phones ----------
 function buyBar() {
-  const hero = document.getElementById('hero'), order = document.getElementById('order');
+  const hero = document.getElementById('hero'), order = document.getElementById('price');
   if (!hero || !order) return;
   const bar = document.createElement('div');
   bar.className = 'm-buy'; bar.setAttribute('aria-hidden', 'true');
-  bar.innerHTML = `<div><b>${price()} грн</b><small>усі три таблиці</small></div><a class="btn" href="#order" tabindex="-1">Купити</a>`;
+  bar.innerHTML = `<div><b>7 днів безкоштовно</b><small>далі від 199 грн/міс</small></div><a class="btn" href="https://app.kuhnyavcifrah.shop/login" tabindex="-1">Спробувати</a>`;
   document.body.append(bar);
   let heroGone = false, orderSeen = false;
   const update = () => bar.classList.toggle('show', heroGone && !orderSeen);

@@ -1,30 +1,13 @@
-// What the order function sells and emails. Files are encrypted copies in api/_files (see order.js).
-// price is the launch price until `until`, then priceAfter — keep in sync with data-* on <body> in index.html.
+// What the order function sells. Кухня в цифрах is a web app sold as access codes (month / year):
+// after the buyer pays by card transfer, the owner checks the money and issues a code (see README of the app).
 export default {
   "brand": "Кухня в цифрах",
-  "site": "kukhnya-v-tsyfrakh.vercel.app",
-  "title": "Набір «Кухня під контролем»",
-  "price": 599,
+  "site": "kuhnyavcifrah.shop",
+  "app": "https://app.kuhnyavcifrah.shop",
+  "title": "Доступ до застосунку «Кухня в цифрах»",
   "accent": "#e0492e",
-  "files": [
-    {
-      "name": "1_Техкарти_і_собівартість.xlsx",
-      "enc": "1.enc"
-    },
-    {
-      "name": "2_Закупівлі_та_інвентаризація.xlsx",
-      "enc": "2.enc"
-    },
-    {
-      "name": "3_Санітарні_журнали.xlsx",
-      "enc": "3.enc"
-    }
-  ],
-  "howTo": [
-    "Відкрийте файли в Excel або завантажте в Google Таблиці (Файл → Імпорт).",
-    "Почніть з «Техкарти і собівартість»: на першому аркуші — коротка інструкція.",
-    "Жовті клітинки заповнюєте ви, решта рахується сама."
-  ],
-  "priceAfter": 699,
-  "until": "2026-11-02T23:59:59+02:00"
+  "plans": {
+    "month": { "title": "Доступ на місяць", "amount": 199, "days": 30 },
+    "year": { "title": "Доступ на рік", "amount": 1490, "days": 365 }
+  }
 };

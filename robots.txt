@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kukhnya-v-tsyfrakh.vercel.app/sitemap.xml
+Sitemap: https://kuhnyavcifrah.shop/sitemap.xml

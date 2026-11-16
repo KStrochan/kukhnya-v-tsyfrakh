@@ -367,3 +367,20 @@ footer>.wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
 }
 @media (max-width:767px){.js-scene .stage{padding-bottom:76px}}
+
+/* ---------- web app: phone screenshots, plan picker ---------- */
+.app-sheet .sheet-ui{align-items:center;justify-content:center;padding:clamp(18px,3vw,40px)}
+.phone{width:min(100%,300px);aspect-ratio:412/860;border-radius:34px;padding:10px;background:var(--ink);box-shadow:0 24px 50px -24px rgba(14,18,15,.55);margin:0}
+.phone img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:25px;background:#fff}
+.trial-cta{margin-top:clamp(24px,3vw,40px)}
+.plans{border:0;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.plans legend{font-weight:600;margin-bottom:8px;padding:0}
+.plan{position:relative;cursor:pointer}
+.plan input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.plan span{display:grid;gap:2px;padding:14px 16px;min-height:44px;box-shadow:inset 0 0 0 2px var(--grid-paper);background:#fff;transition:box-shadow .2s,background-color .2s}
+.plan b{font-size:17px}
+.plan i{font-style:normal;color:var(--on-paper-2)}
+.plan input:checked+span{box-shadow:inset 0 0 0 3px var(--ink);background:var(--cell)}
+.plan input:checked+span i{color:var(--ink)}
+.plan input:focus-visible+span{outline:3px solid var(--focus);outline-offset:3px}
+@media (max-width:900px){.app-sheet{grid-template-columns:1fr}.app-sheet .sheet-ui{margin:0 2px 2px}}

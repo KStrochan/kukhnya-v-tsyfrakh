@@ -21,6 +21,8 @@ import PRODUCT from './_product.js';
 const clean = (s, n = 300) => String(s ?? '').slice(0, n).trim();
 // Launch price until PRODUCT.until, then PRODUCT.priceAfter (the page uses the same dates).
 const price = () => (PRODUCT.until && Date.now() < Date.parse(PRODUCT.until) ? PRODUCT.price : PRODUCT.priceAfter || PRODUCT.price);
+// Subscription products (PRODUCT.plans): the plan comes from the form, the amount and days only from here.
+const planOf = (key) => (PRODUCT.plans && Object.hasOwn(PRODUCT.plans, key) ? { key, ...PRODUCT.plans[key] } : null);
 const hi = (name, rest) => (name ? `${name}, ${rest}` : rest.charAt(0).toUpperCase() + rest.slice(1));
 const isEmail = (s) => /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(s);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -92,6 +94,34 @@ async function notifyOwner(t, subject, lines, extraHtml = '') {
   });
 }
 
+// Access to the app: card transfer, then the owner issues a code by hand.
+async function accessOrder(t, res, { stage, plan, email, payable, card }) {
+  const when = new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kyiv' });
+  const info = [`Тариф: ${plan.title}`, `Сума: ${plan.amount} грн`, `Email: ${email}`, `Час: ${when}`];
+  const sqlHtml = `<p style="margin:18px 0 6px;font-size:14px">Коли гроші надійдуть, у Supabase → SQL Editor виконай і надішли код покупцю:</p>
+    <pre style="background:#f1efe8;padding:12px;border-radius:8px;font-size:13px;white-space:pre-wrap">select code from public.issue_access_codes(1, ${plan.days}, null, '${esc(email)} · ${esc(plan.title)}');</pre>`;
+  if (stage === 'lead') {
+    if (payable) return res.status(200).json({ ok: true, card });
+    await notifyOwner(t, `Заявка на доступ — ${email}`, [...info, '', 'Картку для оплати не налаштовано (PAY_CARD): напиши покупцю, як оплатити.'], sqlHtml);
+    await t.sendMail({
+      from: `"${PRODUCT.brand}" <${process.env.SMTP_USER}>`, to: email,
+      subject: `Заявку прийнято — ${PRODUCT.brand}`,
+      text: `Дякуємо! ${plan.title} — ${plan.amount} грн. Ми напишемо вам на цю адресу, як оплатити, і надішлемо код доступу.`,
+    });
+    return res.status(200).json({ ok: true });
+  }
+  if (stage === 'paid') {
+    await notifyOwner(t, `💳 Перевір оплату ${plan.amount} грн — ${email}`, [...info, '', 'Перевір надходження на картку.'], sqlHtml);
+    await t.sendMail({
+      from: `"${PRODUCT.brand}" <${process.env.SMTP_USER}>`, to: email,
+      subject: `Перевіряємо оплату — ${PRODUCT.brand}`,
+      text: `Дякуємо! Перевіряємо оплату ${plan.amount} грн (${plan.title.toLowerCase()}). Щойно вона надійде, на цю адресу прийде код доступу. Його треба ввести в застосунку на сторінці «Ще»: ${PRODUCT.app}`,
+    });
+    return res.status(200).json({ ok: true, delivered: false });
+  }
+  return res.status(400).json({ ok: false });
+}
+
 export default async function handler(req, res) {
   const t = mailer();
 
@@ -116,7 +146,11 @@ export default async function handler(req, res) {
   const card = String(process.env.PAY_CARD || '').replace(/\D/g, '');
   const payable = lang === 'uk' && card.length >= 12;
 
+  const plan = planOf(clean(b.plan, 10));
+  if (PRODUCT.plans && !plan) return res.status(400).json({ ok: false, error: 'unknown plan' });
+
   try {
+    if (plan) return await accessOrder(t, res, { stage, plan, email, payable, card });
     if (stage === 'lead') {
       if (payable) return res.status(200).json({ ok: true, card }); // the buyer now sees the payment step
       // No payment method (or the English version): plain pre-order.
