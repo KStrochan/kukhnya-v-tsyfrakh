@@ -1,7 +1,8 @@
 // Vercel serverless function: orders from the site form, delivered by email.
 //
 // Environment variables (Vercel → Project → Settings → Environment Variables):
-//   SMTP_USER    — the Gmail address letters are sent from (e.g. brand.name@gmail.com)
+//   SMTP_USER    — SMTP login: the Gmail address, or "resend" for Resend (then SMTP_HOST=smtp.resend.com)
+//   MAIL_FROM    — sender address, e.g. hello@kuhnyavcifrah.shop (optional, defaults to SMTP_USER)
 //   SMTP_PASS    — a Gmail app password for it (Google account → Security → App passwords; needs 2-step verification)
 //   FILES_KEY    — key that decrypts the product files in api/_files (given once by the developer)
 //   PAY_CARD     — card number buyers transfer to via EasyPay. Without it the form works as a plain pre-order.
@@ -26,6 +27,8 @@ const planOf = (key) => (PRODUCT.plans && Object.hasOwn(PRODUCT.plans, key) ? { 
 const hi = (name, rest) => (name ? `${name}, ${rest}` : rest.charAt(0).toUpperCase() + rest.slice(1));
 const isEmail = (s) => /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(s);
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const FROM = () => process.env.MAIL_FROM || process.env.SMTP_USER;
 
 function mailer() {
   if (process.env.SMTP_HOST === 'json') return nodemailer.createTransport({ jsonTransport: true }); // local tests
@@ -72,7 +75,7 @@ async function deliver(t, { name, email }) {
   const attachments = PRODUCT.files.map((f) => ({ filename: f.name, content: decrypt(f.enc) }));
   const hello = hi(name, 'дякуємо за покупку!');
   await t.sendMail({
-    from: `"${PRODUCT.brand}" <${process.env.SMTP_USER}>`,
+    from: `"${PRODUCT.brand}" <${FROM()}>`,
     to: email,
     subject: `Ваше замовлення: ${PRODUCT.title}`,
     text: `${hello}\n\n${PRODUCT.howTo.join('\n')}\n\nФайли — у вкладеннях до цього листа. Якщо щось не відкривається, просто дайте відповідь на цей лист.`,
@@ -86,8 +89,8 @@ async function deliver(t, { name, email }) {
 
 async function notifyOwner(t, subject, lines, extraHtml = '') {
   await t.sendMail({
-    from: `"${PRODUCT.brand} — сайт" <${process.env.SMTP_USER}>`,
-    to: process.env.OWNER_EMAIL || process.env.SMTP_USER,
+    from: `"${PRODUCT.brand} — сайт" <${FROM()}>`,
+    to: process.env.OWNER_EMAIL || FROM(),
     subject,
     text: lines.join('\n'),
     html: letter(subject, `<p style="font-size:15px;line-height:1.6;margin:0">${lines.map(esc).join('<br>')}</p>${extraHtml}`),
@@ -104,7 +107,7 @@ async function accessOrder(t, res, { stage, plan, email, payable, card }) {
     if (payable) return res.status(200).json({ ok: true, card });
     await notifyOwner(t, `Заявка на доступ — ${email}`, [...info, '', 'Картку для оплати не налаштовано (PAY_CARD): напиши покупцю, як оплатити.'], sqlHtml);
     await t.sendMail({
-      from: `"${PRODUCT.brand}" <${process.env.SMTP_USER}>`, to: email,
+      from: `"${PRODUCT.brand}" <${FROM()}>`, to: email,
       subject: `Заявку прийнято — ${PRODUCT.brand}`,
       text: `Дякуємо! ${plan.title} — ${plan.amount} грн. Ми напишемо вам на цю адресу, як оплатити, і надішлемо код доступу.`,
     });
@@ -113,7 +116,7 @@ async function accessOrder(t, res, { stage, plan, email, payable, card }) {
   if (stage === 'paid') {
     await notifyOwner(t, `💳 Перевір оплату ${plan.amount} грн — ${email}`, [...info, '', 'Перевір надходження на картку.'], sqlHtml);
     await t.sendMail({
-      from: `"${PRODUCT.brand}" <${process.env.SMTP_USER}>`, to: email,
+      from: `"${PRODUCT.brand}" <${FROM()}>`, to: email,
       subject: `Перевіряємо оплату — ${PRODUCT.brand}`,
       text: `Дякуємо! Перевіряємо оплату ${plan.amount} грн (${plan.title.toLowerCase()}). Щойно вона надійде, на цю адресу прийде код доступу. Його треба ввести в застосунку на сторінці «Ще»: ${PRODUCT.app}`,
     });
@@ -156,7 +159,7 @@ export default async function handler(req, res) {
       // No payment method (or the English version): plain pre-order.
       await notifyOwner(t, `Нове передзамовлення — ${PRODUCT.brand}`, [`Продукт: ${PRODUCT.title}`, `Email: ${email}`, `Мова: ${lang}`]);
       await t.sendMail({
-        from: `"${PRODUCT.brand}" <${process.env.SMTP_USER}>`, to: email,
+        from: `"${PRODUCT.brand}" <${FROM()}>`, to: email,
         subject: lang === 'en' ? `We got your order — ${PRODUCT.brand}` : `Заявку прийнято — ${PRODUCT.brand}`,
         text: lang === 'en' ? 'Hi! Thanks — we will email you about payment and send the files shortly.' : 'Дякуємо! Ми напишемо вам на цю адресу щодо оплати і надішлемо файли.',
       });
@@ -172,7 +175,7 @@ export default async function handler(req, res) {
         await notifyOwner(t, `💳 Перевір оплату ${price()} грн — ${email}`, [...info, '', 'Перевір надходження на картку і натисни кнопку нижче — покупцю піде лист із файлами.'],
           `<p style="margin:18px 0 0"><a href="${link}" style="display:inline-block;background:${PRODUCT.accent};color:#fff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700">Підтвердити і надіслати файли</a></p>`);
         await t.sendMail({
-          from: `"${PRODUCT.brand}" <${process.env.SMTP_USER}>`, to: email,
+          from: `"${PRODUCT.brand}" <${FROM()}>`, to: email,
           subject: `Перевіряємо оплату — ${PRODUCT.brand}`,
           text: `${hi(name, 'дякуємо!')} Перевіряємо оплату ${price()} грн. Щойно вона надійде, на цю адресу прийде лист із файлами.`,
         });
@@ -184,7 +187,7 @@ export default async function handler(req, res) {
     }
     if (stage === 'gift' && PRODUCT.gift) {
       await t.sendMail({
-        from: `"${PRODUCT.brand}" <${process.env.SMTP_USER}>`, to: email,
+        from: `"${PRODUCT.brand}" <${FROM()}>`, to: email,
         subject: `Ваш подарунок: ${PRODUCT.gift.title}`,
         text: `Тримайте ${PRODUCT.gift.title} — PDF у вкладенні.\n\nСподобається — повний пакет на ${PRODUCT.title.replace(/^Повний пакет: /, '')} тут: https://${PRODUCT.site}/#recap`,
         html: letter(`Ваш подарунок: ${PRODUCT.gift.title}`,
