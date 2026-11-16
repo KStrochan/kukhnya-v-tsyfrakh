@@ -56,12 +56,12 @@ export default async function handler(req, res) {
     const title = 'Доступ активовано';
     try {
       await sendToBuyer(t, email, `Доступ активовано — ${PRODUCT.brand}`,
-        `Дякуємо за оплату! ${PLANS[plan].title} активовано до ${date}.\n\nУвійдіть у застосунок з цим email: ${PRODUCT.app}/login\nКод для входу прийде листом.\n\nКерувати підпискою чи скасувати її можна за посиланням у листі від Creem про оплату.`,
+        `Дякуємо за оплату! ${PLANS[plan].title} активовано до ${date}.\n\nУвійдіть у застосунок з цим email: ${PRODUCT.app}/login\nКод для входу прийде листом.\n\nКерувати підпискою чи скасувати її можна за посиланням у листі від Creem про оплату.\nПитання — hello@kuhnyavcifrah.shop.`,
         letter(title,
           `<p style="margin:0 0 12px;font-size:15px;line-height:1.55">Дякуємо за оплату! <b>${esc(PLANS[plan].title)}</b> діє до <b>${esc(date)}</b>.</p>
            <p style="margin:0 0 18px;font-size:15px;line-height:1.55">Увійдіть у застосунок з цим email (<b>${esc(email)}</b>) — код для входу прийде листом.</p>
            <p style="margin:0 0 18px"><a href="${PRODUCT.app}/login" style="display:inline-block;background:${PRODUCT.accent};color:#fff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:700">Відкрити застосунок</a></p>
-           <p style="margin:0;font-size:14px;color:#5c5c66">Керувати підпискою чи скасувати її можна за посиланням у листі від Creem про оплату.</p>`));
+           <p style="margin:0;font-size:14px;color:#5c5c66">Керувати підпискою чи скасувати її можна за посиланням у листі від Creem про оплату. Питання — hello@kuhnyavcifrah.shop.</p>`));
       await sendToOwner(t, `💳 Нова підписка — ${email}`, [`Тариф: ${PLANS[plan].title}`, `Email: ${email}`, `Доступ до: ${date}`, process.env.CREEM_TEST === '1' ? 'ТЕСТОВИЙ РЕЖИМ' : '']);
     } catch (e) {
       console.error('creem webhook mail', e); // access is already granted; a lost letter must not trigger a retry
