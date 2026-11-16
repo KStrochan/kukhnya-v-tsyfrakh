@@ -244,7 +244,7 @@ function buyBar() {
   if (!hero || !order) return;
   const bar = document.createElement('div');
   bar.className = 'm-buy'; bar.setAttribute('aria-hidden', 'true');
-  bar.innerHTML = `<div><b>7 днів безкоштовно</b><small>далі від 199 грн/міс</small></div><a class="btn" href="https://app.kuhnyavcifrah.shop/login" tabindex="-1">Спробувати</a>`;
+  bar.innerHTML = `<div><b>7 днів безкоштовно</b><small>далі від $4.99/міс</small></div><a class="btn" href="https://app.kuhnyavcifrah.shop/login" tabindex="-1">Спробувати</a>`;
   document.body.append(bar);
   let heroGone = false, orderSeen = false;
   const update = () => bar.classList.toggle('show', heroGone && !orderSeen);
