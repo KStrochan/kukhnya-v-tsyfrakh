@@ -1,6 +1,6 @@
 // Meta Pixel: shows which ads bring people who try and buy the app.
 // The id is public; with an empty id nothing is loaded and track() does nothing.
-export const PIXEL_ID = '';
+export const PIXEL_ID = '4128624057443276';
 
 if (PIXEL_ID && !window.fbq) {
   /* eslint-disable */

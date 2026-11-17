@@ -1,4 +1,4 @@
-import { track } from './pixel.js?v=20261117a';
+import { track } from './pixel.js?v=20261117b';
 
 // Header turns solid as soon as the page moves, so it never sits on top of the content.
 const header = document.querySelector('.site-header');
