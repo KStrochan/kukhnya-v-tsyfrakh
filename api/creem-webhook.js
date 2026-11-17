@@ -1,7 +1,7 @@
 // Creem → this webhook after each subscription payment: extends app access for the buyer's email.
 // Register https://<site>/api/creem-webhook in Creem → Developers → Webhooks.
 import PRODUCT from './_product.js';
-import { PLANS, grantAccess, isTest, planByProduct, validSignature } from './_creem.js';
+import { PLANS, grantAccess, isTest, planByProduct, revokeAccess, validSignature } from './_creem.js';
 import { esc, letter, mailer, sendToBuyer, sendToOwner } from './_mail.js';
 
 // One extra day so a renewal that is charged a few hours late doesn't lock the account.
@@ -24,6 +24,34 @@ export function paymentOf(event) {
   return { email, plan: Object.hasOwn(PLANS, plan || '') ? plan : null, periodEnd };
 }
 
+/** Money went back to the buyer (refund) or the bank opened a chargeback: close paid access, tell the owner. */
+async function refundOrDispute(event, res) {
+  const email = String(event.object?.customer?.email || '').trim().toLowerCase();
+  if (!email) {
+    console.error('creem webhook: no email in', event.eventType, event.id);
+    return res.status(200).json({ ok: true, ignored: 'no email' });
+  }
+  let result;
+  try {
+    result = await revokeAccess(email);
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ ok: false }); // Creem retries
+  }
+  const what = event.eventType === 'refund.created' ? 'Повернення коштів' : 'Чарджбек (спір через банк)';
+  try {
+    await sendToOwner(mailer(), `↩️ ${what} — ${email}`, [
+      `Email: ${email}`,
+      result.revoked ? 'Оплачений доступ до застосунку закрито.' : 'Активного оплаченого доступу не було — нічого не змінено.',
+      event.eventType === 'dispute.created' ? 'Відповісти на спір можна в Creem → Платежі.' : '',
+      isTest() ? 'ТЕСТОВИЙ РЕЖИМ' : '',
+    ]);
+  } catch (e) {
+    console.error('creem webhook mail', e);
+  }
+  return res.status(200).json({ ok: true, revoked: !!result.revoked });
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ ok: false });
   const raw = await rawBody(req);
@@ -32,6 +60,7 @@ export default async function handler(req, res) {
   let event;
   try { event = JSON.parse(raw.toString('utf8')); } catch { return res.status(400).json({ ok: false }); }
   const type = event.eventType;
+  if (type === 'refund.created' || type === 'dispute.created') return refundOrDispute(event, res);
   if (type !== 'checkout.completed' && type !== 'subscription.paid') return res.status(200).json({ ok: true, ignored: type });
 
   const { email, plan, periodEnd } = paymentOf(event);

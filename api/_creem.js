@@ -69,3 +69,10 @@ export async function grantAccess(email, until) {
   if (!r.json || r.json.status !== 'ok') throw new Error(`grant_paid_access: ${r.text.slice(0, 200)}`);
   return new Date(r.json.paid_until);
 }
+
+/** Refund or chargeback: paid access ends right away (the trial and past dates stay as they are). */
+export async function revokeAccess(email) {
+  const r = await supabase('/rest/v1/rpc/revoke_paid_access', { p_email: email });
+  if (!r.ok || !r.json) throw new Error(`revoke_paid_access ${r.status}: ${r.text.slice(0, 200)}`);
+  return r.json;
+}

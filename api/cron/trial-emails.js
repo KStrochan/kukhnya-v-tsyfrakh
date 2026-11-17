@@ -66,7 +66,10 @@ export function compose(row) {
 }
 
 export default async function handler(req, res) {
-  if (req.method !== 'GET' && req.method !== 'POST') return res.status(405).json({ ok: false });
+  if (req.method !== 'GET') return res.status(405).json({ ok: false });
+  // Only Vercel Cron calls this (it sends this user agent). Sending is idempotent anyway, so this just keeps
+  // strangers from poking the database.
+  if (!/vercel-cron/i.test(String(req.headers['user-agent'] || ''))) return res.status(404).json({ ok: false });
   const batch = await supabase('/rest/v1/rpc/trial_email_batch', { p_limit: 90 }); // Resend free plan: 100 letters a day
   if (!batch.ok || !Array.isArray(batch.json)) {
     console.error('trial_email_batch', batch.status, batch.text.slice(0, 200));

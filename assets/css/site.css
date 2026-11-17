@@ -384,3 +384,7 @@ footer>.wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
 .plan input:checked+span i{color:var(--ink)}
 .plan input:focus-visible+span{outline:3px solid var(--focus);outline-offset:3px}
 @media (max-width:900px){.app-sheet{grid-template-columns:1fr}.app-sheet .sheet-ui{margin:0 2px 2px}}
+
+/* ---------- fixes: narrow phones, tap targets ---------- */
+@media (max-width:340px){.price-now{font-size:100px}}
+footer .legal a{display:inline-block;padding:10px 0}
