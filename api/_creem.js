@@ -43,7 +43,7 @@ function supabaseHeaders() {
   return h;
 }
 
-async function supabase(path, body) {
+export async function supabase(path, body) {
   const r = await fetch(`${process.env.SUPABASE_URL}${path}`, { method: 'POST', headers: supabaseHeaders(), body: JSON.stringify(body) });
   const text = await r.text();
   let json = null;

@@ -1,0 +1,21 @@
+// Meta Pixel: shows which ads bring people who try and buy the app.
+// The id is public; with an empty id nothing is loaded and track() does nothing.
+export const PIXEL_ID = '';
+
+if (PIXEL_ID && !window.fbq) {
+  /* eslint-disable */
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  window.fbq('init', PIXEL_ID);
+  window.fbq('track', 'PageView');
+}
+
+/** Standard Meta event; never throws (ad blockers, no pixel). */
+export function track(event, params) {
+  try { if (PIXEL_ID && window.fbq) window.fbq('track', event, params); } catch {}
+}
+
+// Every "try it" link leads to the app's sign-in: count it as a lead.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest && e.target.closest('a[href*="app.kuhnyavcifrah.shop/login"]');
+  if (a) track('Lead');
+}, { capture: true });

@@ -17,6 +17,14 @@
 
 Тарифи (product id обох режимів) — у `api/_creem.js`, зі сторінки приходить тільки назва тарифу (`month` / `year`). Код — `assets/js/main.js`, `api/checkout.js`, `api/creem-webhook.js`, `api/_creem.js`, `api/_mail.js`.
 
+## Листи пробного періоду
+
+`api/cron/trial-emails.js` щодня о 09:00 за Києвом (Vercel Cron, `vercel.json`) бере з бази тих, кому належить лист (`trial_email_batch`), і надсилає один із трьох: привітання з першими кроками, «залишилось 2 дні» (з кількістю внесених продуктів і страв), «пробний закінчується». База пам'ятає відправлене (`trial_emails`), тож повторний запуск нічого не дублює; тим, хто оплатив, листи не йдуть. Відповіді приходять на hello@kuhnyavcifrah.shop.
+
+## Meta Pixel
+
+Id — у `assets/js/pixel.js` (і в застосунку — `src/lib/analytics.ts`). Порожній id = піксель вимкнено. Події: `PageView`, `Lead` (клік «Спробувати»), `InitiateCheckout` (перехід до оплати), `Purchase` (сторінка «Дякуємо»), у застосунку — `CompleteRegistration` і `StartTrial` при першому вході.
+
 ## Деплой на Vercel
 
 1. New Project → імпортуйте цей репозиторій. Framework Preset: **Other**, Build Command порожній, Output Directory — корінь.

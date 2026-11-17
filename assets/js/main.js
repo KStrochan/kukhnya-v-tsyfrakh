@@ -1,3 +1,5 @@
+import { track } from './pixel.js?v=20261117a';
+
 // Header turns solid as soon as the page moves, so it never sits on top of the content.
 const header = document.querySelector('.site-header');
 const onScroll = () => header.classList.toggle('solid', scrollY > 24);
@@ -24,6 +26,8 @@ form.addEventListener('submit', async (e) => {
     });
     const j = await r.json().catch(() => ({}));
     if (!r.ok || !j.url) throw new Error('checkout');
+    const plan = data.plan === 'year' ? { value: 35.99 } : { value: 4.99 };
+    track('InitiateCheckout', { ...plan, currency: 'USD' });
     location.href = j.url;
   } catch {
     btn.disabled = false;
